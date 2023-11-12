@@ -1,0 +1,1 @@
+Gosho I Tosho sa nai dobri priqteli
