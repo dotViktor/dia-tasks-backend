@@ -4,6 +4,7 @@ const dataBase = mysql
   .createPool({
     host: "localhost",
     user: "root",
+    port: process.env.PORT,
     password: "",
     database: "dia_tasks",
   })

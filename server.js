@@ -1,5 +1,9 @@
 import express from "express";
 import { usersRouter } from "./app/routes/users.routes.js";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 const app = express();
 
 //middlewares
