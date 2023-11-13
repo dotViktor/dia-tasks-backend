@@ -13,3 +13,5 @@
 - npm install
 - npm run dbSetup
 - npm run dev
+
+### Have Fun!
