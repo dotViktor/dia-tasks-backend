@@ -1,6 +1,6 @@
 import mysql from "mysql2";
 
-const pool = mysql
+const dataBase = mysql
   .createPool({
     host: "localhost",
     user: "root",
@@ -11,7 +11,7 @@ const pool = mysql
 
 async function createUsersTable() {
   try {
-    await pool.query(`
+    await dataBase.query(`
     CREATE TABLE Users (
       id INT AUTO_INCREMENT PRIMARY KEY,
       name VARCHAR(255),
