@@ -1,17 +1,8 @@
 import mysql from "mysql2";
 import * as dotenv from "dotenv";
+import { dataBase } from "./app/config/databasePool";
 
 dotenv.config();
-
-const dataBase = mysql
-  .createPool({
-    host: "localhost",
-    user: "root",
-    port: process.env.PORT,
-    password: "",
-    database: "dia_tasks",
-  })
-  .promise();
 
 async function createUsersTable() {
   try {
@@ -56,4 +47,5 @@ async function fillDummyUsers() {
 }
 
 createUsersTable();
+
 fillDummyUsers();
