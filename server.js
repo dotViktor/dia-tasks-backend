@@ -7,10 +7,10 @@ dotenv.config();
 
 const app = express();
 
-//middlewares
-app.use("/users", usersRouter);
 app.use(express.json());
 app.use(cors());
+
+app.use("/users", usersRouter);
 
 app.listen(7777, () => {
   console.log("Server started on port 7777");
