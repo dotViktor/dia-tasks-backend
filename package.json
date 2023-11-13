@@ -1,0 +1,21 @@
+{
+  "name": "dia-tasks-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dbSetup": "node dbSetup.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "5.0.0-beta.1",
+    "mysql2": "^3.6.3"
+  }
+}
