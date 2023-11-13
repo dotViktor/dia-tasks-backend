@@ -1,6 +1,6 @@
 import mysql from "mysql2";
 import * as dotenv from "dotenv";
-import { dataBase } from "./app/config/databasePool";
+import { dataBase } from "./app/config/databasePool.js";
 
 dotenv.config();
 
@@ -46,6 +46,6 @@ async function fillDummyUsers() {
   }
 }
 
-createUsersTable();
-
-fillDummyUsers();
+createUsersTable().then(() => {
+  fillDummyUsers();
+});

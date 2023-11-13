@@ -1,4 +1,7 @@
 import mysql from "mysql2";
+import * as dotEnv from "dotenv";
+
+dotEnv.config();
 
 export const dataBase = mysql
   .createPool({
