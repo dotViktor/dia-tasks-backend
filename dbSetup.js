@@ -15,6 +15,10 @@ const dataBase = mysql
 
 async function createUsersTable() {
   try {
+    if (await dataBase.query("SHOW TABLES LIKE 'Users'")) {
+      console.log("Users table already exists");
+      return;
+    }
     await dataBase.query(`
     CREATE TABLE Users (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,4 +35,25 @@ async function createUsersTable() {
   }
 }
 
+async function fillDummyUsers() {
+  try {
+    const [rows] = await dataBase.query(`SELECT * FROM Users;`);
+    if (rows.length > 0) {
+      console.log("Users table already has data");
+      return;
+    }
+    await dataBase.query(`
+    INSERT INTO Users (name, email, role, password)
+    VALUES
+    ('Gosho', 'g@g.com', 'admin', '123456'),
+    ('Pesho', 'p@p.com', 'admin', '123456'),
+    ('Tosho', 't@t.com', 'admin', '123456')
+    `);
+    console.log("Filled dummy data");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 createUsersTable();
+fillDummyUsers();
