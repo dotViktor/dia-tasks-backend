@@ -40,4 +40,14 @@ export async function addUser(name, email, role, password) {
   }
 }
 
+export async function getUserByEmail(email) {
+  const [user] = await dataBase.query(`SELECT * FROM Users WHERE email = ?;`, [
+    email,
+  ]);
+  if (user.length > 0) {
+    return user;
+  }
+  return null;
+}
+
 export * as usersController from "./users.controllers.js";
