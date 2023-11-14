@@ -1,6 +1,6 @@
 import express from "express";
 import { usersController } from "../controllers/users.controllers.js";
-import { auth } from "../controllers/auth.controllers.js";
+import { authController } from "../controllers/auth.controllers.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -13,9 +13,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   if (await usersController.getUserByEmail(req.body.email)) {
-    if (await auth.validateUser(req.body.email, req.body.password)) {
+    if (await authController.validateUser(req.body.email, req.body.password)) {
       const [user] = await usersController.getUserByEmail(req.body.email);
-      const token = auth.generateToken({
+      const token = authController.generateToken({
         id: user.id,
         email: user.email,
         name: user.name,
@@ -27,6 +27,20 @@ router.post("/login", async (req, res) => {
     }
   } else {
     res.status(404).send("User not found");
+  }
+});
+
+router.post("/register", async (req, res) => {
+  if (await usersController.getUserByEmail(req.body.email)) {
+    res.status(409).send("User already exists");
+  } else {
+    const hashedPassword = await authController.hashPassword(req.body.password);
+    const response = await usersController.addUser(
+      req.body.name,
+      req.body.email,
+      hashedPassword
+    );
+    res.status(201).send(response);
   }
 });
 

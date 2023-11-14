@@ -26,13 +26,13 @@ export async function getUsersById(id) {
   }
 }
 
-export async function addUser(name, email, role, password) {
+export async function addUser(name, email, password) {
   try {
     const [rows] = await dataBase.query(
       `
-    INSERT INTO Users (name, email, role, password) VALUES (?, ?, ?, ?);
+    INSERT INTO Users (name, email, role, password) VALUES (?, ?, 'user', ?);
     `,
-      [name, email, role, password]
+      [name, email, password]
     );
     return rows;
   } catch (error) {

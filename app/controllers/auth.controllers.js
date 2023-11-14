@@ -21,4 +21,4 @@ export async function validateUser(email, password) {
   return isMatching;
 }
 
-export * as auth from "./auth.controllers.js";
+export * as authController from "./auth.controllers.js";
