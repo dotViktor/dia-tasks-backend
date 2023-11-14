@@ -30,14 +30,14 @@ async function fillDummyUsers() {
   try {
     const [rows] = await dataBase.query(`SELECT * FROM Users;`);
     if (rows.length > 0) {
-      console.log("Users table already has data");
-      return;
+      console.log("Replacing all dummy data");
+      await dataBase.query(`DELETE FROM Users;`);
     }
     await dataBase.query(`
     INSERT INTO Users (name, email, role, password)
     VALUES
-    ('Gosho', 'g@g.com', 'admin', '123456'),
-    ('Pesho', 'p@p.com', 'admin', '123456'),
+    ('Gosho', 'g@g.com', 'admin', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K'),
+    ('Pesho', 'p@p.com', 'admin', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K'),
     ('Tosho', 't@t.com', 'admin', '123456')
     `);
     console.log("Filled dummy data");
