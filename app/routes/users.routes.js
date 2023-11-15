@@ -20,10 +20,7 @@ router.post("/login", async (req, res) => {
     if (await authController.validateUser(req.body.email, req.body.password)) {
       const [user] = await usersController.getUserByEmail(req.body.email);
       const token = authController.generateToken({
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
+        user,
       });
       res.status(202).send({ token });
     } else {
@@ -50,6 +47,10 @@ router.post("/register", async (req, res) => {
     );
     res.status(201).send(response);
   }
+});
+
+router.delete("/:id", async (req, res) => {
+  res.status(200).send(await usersController.deleteUserById(req.params.id));
 });
 
 export { router as usersRouter };

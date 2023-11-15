@@ -4,7 +4,7 @@ import { dataBase } from "../config/databasePool.js";
 export async function getUsers() {
   try {
     const [rows] = await dataBase.query(`
-    SELECT * FROM Users;
+    SELECT id, name, email, role FROM Users;
     `);
     return rows;
   } catch (error) {
@@ -16,7 +16,7 @@ export async function getUsersById(id) {
   try {
     const [rows] = await dataBase.query(
       `
-    SELECT * FROM Users WHERE id = ?;
+    SELECT id, name, email, role FROM Users WHERE id = ?;
     `,
       [id]
     );
@@ -41,13 +41,25 @@ export async function addUser(name, email, password) {
 }
 
 export async function getUserByEmail(email) {
-  const [user] = await dataBase.query(`SELECT * FROM Users WHERE email = ?;`, [
-    email,
-  ]);
+  const [user] = await dataBase.query(
+    `SELECT id, name, email, role FROM Users WHERE email = ?;`,
+    [email]
+  );
   if (user.length > 0) {
     return user;
   }
   return null;
+}
+
+export async function deleteUserById(id) {
+  try {
+    const [rows] = await dataBase.query(`DELETE FROM Users WHERE id = ?;`, [
+      id,
+    ]);
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export * as usersController from "./users.controllers.js";

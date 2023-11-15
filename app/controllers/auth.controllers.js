@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getUserByEmail } from "./users.controllers.js";
+import { dataBase } from "../config/databasePool.js";
 
 export function generateToken(user) {
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
@@ -15,9 +16,12 @@ export async function hashPassword(password) {
   return hashedPassword;
 }
 
-export async function validateUser(email, password) {
-  const user = await getUserByEmail(email);
-  const isMatching = await bcrypt.compare(password, user[0].password);
+export async function validateUser(email, incomingPassword) {
+  const [[{ password }]] = await dataBase.query(
+    "SELECT password FROM Users WHERE email = ?",
+    [email]
+  );
+  const isMatching = await bcrypt.compare(incomingPassword, password);
   return isMatching;
 }
 
