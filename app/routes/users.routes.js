@@ -12,6 +12,10 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    res.status(400).send("Missing required fields");
+    return;
+  }
   if (await usersController.getUserByEmail(req.body.email)) {
     if (await authController.validateUser(req.body.email, req.body.password)) {
       const [user] = await usersController.getUserByEmail(req.body.email);
@@ -31,6 +35,10 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
+  if (!req.body.name || !req.body.email || !req.body.password) {
+    res.status(400).send("Missing required fields");
+    return;
+  }
   if (await usersController.getUserByEmail(req.body.email)) {
     res.status(409).send("User already exists");
   } else {
