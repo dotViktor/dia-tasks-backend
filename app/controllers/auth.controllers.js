@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { getUserByEmail } from "./users.controllers.js";
 import { dataBase } from "../config/databasePool.js";
 
 export function generateToken(user) {
@@ -23,6 +22,21 @@ export async function validateUser(email, incomingPassword) {
   );
   const isMatching = await bcrypt.compare(incomingPassword, password);
   return isMatching;
+}
+
+export async function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) {
+    return res.sendStatus(401);
+  }
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = user;
+    next();
+  });
 }
 
 export * as authController from "./auth.controllers.js";
