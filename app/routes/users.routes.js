@@ -22,7 +22,15 @@ router.post("/login", async (req, res) => {
       const token = authController.generateToken({
         user,
       });
-      res.status(202).send({ token });
+      res.status(202).send({
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
     } else {
       res.status(401).send("Invalid credentials");
     }
