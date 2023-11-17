@@ -130,6 +130,49 @@ async function fillUserTasksRelation() {
   }
 }
 
+async function createSubTaskTable() {
+  try {
+    const [result] = await dataBase.query("SHOW TABLES LIKE 'SubTasks'");
+    if (result.length > 0) {
+      console.log("SubTasks table already exists");
+      return;
+    }
+    await dataBase.query(`
+    CREATE TABLE SubTasks (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      TaskParentID int,
+      title VARCHAR(255),
+      description VARCHAR(255),
+      requiredNotes int,
+      requiredImages int,
+      isComplete BOOLEAN,
+      FOREIGN KEY (TaskParentID) REFERENCES Tasks(id)
+    )`);
+    console.log("Created SubTasks table");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fillDummySubTasks() {
+  try {
+    const [rows] = await dataBase.query(`SELECT * FROM SubTasks;`);
+    if (rows.length > 0) {
+      console.log("Replacing all SUBTASKS data");
+      await dataBase.query(`TRUNCATE SubTasks;`);
+    }
+    await dataBase.query(`
+    INSERT INTO SubTasks (TaskParentID, title, description, requiredNotes, requiredImages, isComplete)
+    VALUES
+    (1, 'SubTask 1', 'Description 1', 0, 0, true),
+    (1, 'SubTask 2', 'Description 2', 0, 0, false),
+    (3, 'SubTask 3', 'Description 3', 0, 0, false)
+    `);
+    console.log("Filled SUBTASKS data");
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function setupDatabase() {
   try {
     await createUsersTable();
@@ -142,6 +185,10 @@ async function setupDatabase() {
 
     await fillDummyTasks();
     await fillUserTasksRelation();
+    console.log("----");
+
+    await createSubTaskTable();
+    await fillDummySubTasks();
   } catch (error) {
     console.error("Error setting up database:", error);
   }

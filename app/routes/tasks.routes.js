@@ -53,4 +53,22 @@ router.post("/:taskId/add-user/:userId", async (req, res) => {
       )
     );
 });
+
+router.post("/:taskId/remove-user/:userId", async (req, res) => {
+  res
+    .status(200)
+    .send(
+      await tasksController.unassignUserFromTask(
+        req.params.userId,
+        req.params.taskId
+      )
+    );
+});
+
+router.get("/:taskId/assigned-users", async (req, res) => {
+  res
+    .status(200)
+    .send(await tasksController.getAssignedUsersByTaskId(req.params.taskId));
+});
+
 export { router as tasksRouter };
