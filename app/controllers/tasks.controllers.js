@@ -9,7 +9,7 @@ export async function getTasks() {
         return { ...task, users };
       })
     );
-    return { tasks };
+    return tasks;
   } catch (error) {
     console.log(error);
   }
