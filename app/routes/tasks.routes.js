@@ -11,7 +11,12 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  if (!req.body.title || !req.body.description || !req.body.startTime) {
+  if (
+    !req.body.title ||
+    !req.body.description ||
+    !req.body.startTime ||
+    !req.body.endTime
+  ) {
     res.status(400).send("Missing required fields");
     return;
   }
@@ -25,7 +30,12 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  if (!req.body.title || !req.body.description || !req.body.startTime) {
+  if (
+    !req.body.title ||
+    !req.body.description ||
+    !req.body.startTime ||
+    !req.body.endTime
+  ) {
     res.status(400).send("Missing required fields");
     return;
   }

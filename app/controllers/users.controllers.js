@@ -62,4 +62,16 @@ export async function deleteUserById(id) {
   }
 }
 
+export async function getAssignedTasksByUserId(userId) {
+  try {
+    const [rows] = await dataBase.query(
+      `SELECT * FROM Tasks WHERE id IN (SELECT TaskID FROM UserTasks WHERE UserID = ?);`,
+      [userId]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export * as usersController from "./users.controllers.js";

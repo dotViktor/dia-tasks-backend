@@ -122,7 +122,8 @@ async function fillUserTasksRelation() {
     VALUES
     (1, 1),
     (2, 1),
-    (3, 3)
+    (3, 3),
+    (1, 2)
     `);
     console.log("Filled USERTASKS data");
   } catch (error) {

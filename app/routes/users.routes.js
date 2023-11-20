@@ -61,4 +61,10 @@ router.delete("/:id", async (req, res) => {
   res.status(200).send(await usersController.deleteUserById(req.params.id));
 });
 
+router.get("/:userID/assigned-tasks", async (req, res) => {
+  res
+    .status(200)
+    .send(await usersController.getAssignedTasksByUserId(req.params.userID));
+});
+
 export { router as usersRouter };

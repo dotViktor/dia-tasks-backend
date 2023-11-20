@@ -1,5 +1,7 @@
 import { dataBase } from "../config/databasePool.js";
 
+// we fetch the data for each task seperately as it does not come bundled with users
+// TODO: Optimize by bundling the data and reducing the ammount of calls to the database
 export async function getTasks() {
   try {
     const [tasksQuery] = await dataBase.query(`SELECT * FROM Tasks;`);
@@ -17,10 +19,18 @@ export async function getTasks() {
 
 export async function getTaskById(id) {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM Tasks WHERE id = ?;`, [
-      id,
-    ]);
-    return rows;
+    const [taskQuery] = await dataBase.query(
+      `SELECT * FROM Tasks WHERE id = ?;`,
+      [id]
+    );
+    //add an array of users to the task object
+    const result = await Promise.all(
+      taskQuery.map(async (task) => {
+        const users = await getAssignedUsersByTaskId(task.id);
+        return { ...task, users };
+      })
+    );
+    return result;
   } catch (error) {
     console.log(error);
   }
