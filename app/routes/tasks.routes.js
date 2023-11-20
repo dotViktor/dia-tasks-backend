@@ -1,5 +1,6 @@
 import express from "express";
 import { tasksController } from "../controllers/tasks.controllers.js";
+import { subTasksController } from "../controllers/subtasks.controllers.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -79,6 +80,12 @@ router.get("/:taskId/assigned-users", async (req, res) => {
   res
     .status(200)
     .send(await tasksController.getAssignedUsersByTaskId(req.params.taskId));
+});
+
+router.get("/:taskId/subtasks", async (req, res) => {
+  res
+    .status(200)
+    .send(await subTasksController.getSubTasksByTaskId(req.params.taskId));
 });
 
 export { router as tasksRouter };
