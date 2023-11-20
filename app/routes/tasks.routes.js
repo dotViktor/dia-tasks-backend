@@ -88,4 +88,32 @@ router.get("/:taskId/subtasks", async (req, res) => {
     .send(await subTasksController.getSubTasksByTaskId(req.params.taskId));
 });
 
+router.post("/:taskId/subtasks", async (req, res) => {
+  if (
+    !req.body.TaskParentID ||
+    !req.body.title ||
+    !req.body.description ||
+    !req.body.requiredNotes ||
+    !req.body.requiredImages
+  ) {
+    res.status(400).send("Missing required fields");
+    return;
+  }
+  const response = await subTasksController.createSubTask(
+    req.body.TaskParentID,
+    req.body.title,
+    req.body.description,
+    req.body.requiredNotes,
+    req.body.requiredImages
+  );
+
+  res.status(201).send(response);
+});
+
+router.delete("/:taskId/subtasks/:subTaskId", async (req, res) => {
+  res
+    .status(200)
+    .send(await subTasksController.deleteSubTask(req.params.subTaskId));
+});
+
 export { router as tasksRouter };
