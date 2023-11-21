@@ -27,6 +27,13 @@ router.post("/", async (req, res) => {
     req.body.startTime,
     req.body.endTime
   );
+
+  if (req.body.assignedUsers) {
+    for (const user of req.body.assignedUsers) {
+      await tasksController.assignUserToTask(user.id, response.insertId);
+    }
+  }
+
   res.status(201).send(response);
 });
 
