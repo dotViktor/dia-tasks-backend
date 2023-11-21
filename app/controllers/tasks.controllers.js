@@ -84,6 +84,21 @@ export async function updateTask(id, title, description, startTime, endTime) {
   }
 }
 
+export async function updateUsersInTask(taskId, users) {
+  try {
+    const [rows] = await dataBase.query(
+      `DELETE FROM UserTasks WHERE TaskID = ?;`,
+      [taskId]
+    );
+    for (const user of users) {
+      await assignUserToTask(user.id, taskId);
+    }
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function deleteTaskById(id) {
   try {
     const [rows] = await dataBase.query(`DELETE FROM Tasks WHERE id = ?;`, [

@@ -65,7 +65,11 @@ router.put("/:id", async (req, res) => {
     req.body.startTime,
     req.body.endTime
   );
-  res.status(200).send(response);
+
+  if (req.body.users) {
+    await tasksController.updateUsersInTask(req.params.id, req.body.users);
+  }
+  res.status(200).send({ ...response, addedUsers: req.body.users });
 });
 
 router.delete("/:id", async (req, res) => {
