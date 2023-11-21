@@ -28,8 +28,8 @@ router.post("/", async (req, res) => {
     req.body.endTime
   );
 
-  if (req.body.assignedUsers) {
-    for (const user of req.body.assignedUsers) {
+  if (req.body.users) {
+    for (const user of req.body.users) {
       await tasksController.assignUserToTask(user.id, response.insertId);
     }
   }
