@@ -48,6 +48,30 @@ export async function createTask(title, description, startTime, endTime) {
   }
 }
 
+export async function completeTask(id) {
+  try {
+    const [rows] = await dataBase.query(
+      `UPDATE Tasks SET isComplete = 1 WHERE id = ?;`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function completeSubTask(id) {
+  try {
+    const [rows] = await dataBase.query(
+      `UPDATE SubTasks SET isComplete = 1 WHERE id = ?;`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function updateTask(id, title, description, startTime, endTime) {
   try {
     const [rows] = await dataBase.query(

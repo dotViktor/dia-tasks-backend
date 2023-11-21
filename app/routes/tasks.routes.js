@@ -94,6 +94,16 @@ router.post("/:taskId/remove-user/:userId", async (req, res) => {
     );
 });
 
+router.get("/:taskId/complete-task", async (req, res) => {
+  res.status(200).send(await tasksController.completeTask(req.params.taskId));
+});
+
+router.get("/:taskId/complete-subtask/:subTaskId", async (req, res) => {
+  res
+    .status(200)
+    .send(await subTasksController.completeSubTask(req.params.subTaskId));
+});
+
 router.get("/:taskId/assigned-users", async (req, res) => {
   res
     .status(200)
