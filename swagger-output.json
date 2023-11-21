@@ -177,6 +177,9 @@
                 },
                 "assignedUsers": {
                   "example": "any"
+                },
+                "subtasks": {
+                  "example": "any"
                 }
               }
             }
