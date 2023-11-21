@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
 
   if (req.body.assignedUsers) {
     for (const user of req.body.assignedUsers) {
-      await tasksController.assignUserToTask(user, response.insertId);
+      await tasksController.assignUserToTask(user.id, response.insertId);
     }
   }
 
