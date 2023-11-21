@@ -5,7 +5,8 @@ dotenv.config();
 
 async function createUsersTable() {
   try {
-    if (await dataBase.query("SHOW TABLES LIKE 'Users'")) {
+    const [result] = await dataBase.query("SHOW TABLES LIKE 'Users'");
+    if (result.length > 0) {
       console.log("Users table already exists");
       return;
     }
@@ -50,8 +51,8 @@ async function createTasksTable() {
   try {
     const [result] = await dataBase.query("SHOW TABLES LIKE 'Tasks'");
     if (result.length > 0) {
-      console.log("Tasks table already exists");
-      return;
+      console.log("Replacing tasks table");
+      await dataBase.query(`DROP TABLE Tasks;`);
     }
     await dataBase.query(`
     CREATE TABLE Tasks (
@@ -59,7 +60,8 @@ async function createTasksTable() {
       title VARCHAR(255),
       description VARCHAR(255),
       startTime DATETIME,
-      endTime DATETIME
+      endTime DATETIME,
+      isComplete BOOLEAN DEFAULT 0
     )
   `);
     console.log("Created Tasks table");
@@ -98,11 +100,11 @@ async function fillDummyTasks() {
       await dataBase.query(`TRUNCATE Tasks;`);
     }
     await dataBase.query(`
-    INSERT INTO Tasks (title, description, startTime, endTime)
+    INSERT INTO Tasks (title, description, startTime, endTime, isComplete)
     VALUES
-    ('Task 1', 'Description 1', '2022-01-01 00:00:00', '2022-01-01 00:00:00'),
-    ('Task 2', 'Description 2', '2022-01-01 00:00:00', '2022-01-01 00:00:00'),
-    ('Task 3', 'Description 3', '2022-01-01 00:00:00', '2022-01-01 00:00:00')
+    ('Task 1', 'Description 1', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1),
+    ('Task 2', 'Description 2', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 0),
+    ('Task 3', 'Description 3', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 0)
     `);
     console.log("Filled TASKS data");
   } catch (error) {
@@ -146,7 +148,7 @@ async function createSubTaskTable() {
       description VARCHAR(255),
       requiredNotes int,
       requiredImages int,
-      isComplete BOOLEAN,
+      isComplete BOOLEAN DEFAULT 0,
       FOREIGN KEY (TaskParentID) REFERENCES Tasks(id)
     )`);
     console.log("Created SubTasks table");
@@ -165,9 +167,9 @@ async function fillDummySubTasks() {
     await dataBase.query(`
     INSERT INTO SubTasks (TaskParentID, title, description, requiredNotes, requiredImages, isComplete)
     VALUES
-    (1, 'SubTask 1', 'Description 1', 0, 0, true),
-    (1, 'SubTask 2', 'Description 2', 0, 0, false),
-    (3, 'SubTask 3', 'Description 3', 0, 0, false)
+    (1, 'SubTask 1', 'Description 1', 0, 0, 1),
+    (1, 'SubTask 2', 'Description 2', 0, 0, 0),
+    (3, 'SubTask 3', 'Description 3', 0, 0, 0)
     `);
     console.log("Filled SUBTASKS data");
   } catch (error) {

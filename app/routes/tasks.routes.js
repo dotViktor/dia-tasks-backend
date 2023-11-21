@@ -30,10 +30,21 @@ router.post("/", async (req, res) => {
 
   if (req.body.assignedUsers) {
     for (const user of req.body.assignedUsers) {
-      await tasksController.assignUserToTask(user.id, response.insertId);
+      await tasksController.assignUserToTask(user, response.insertId);
     }
   }
 
+  if (req.body.subtasks) {
+    for (const subtask of req.body.subtasks) {
+      await subTasksController.createSubTask(
+        response.insertId,
+        subtask.title,
+        subtask.description,
+        subtask.requiredNotes,
+        subtask.requiredImages
+      );
+    }
+  }
   res.status(201).send(response);
 });
 
