@@ -495,9 +495,17 @@
         }
       }
     },
-    "/upload/": {
+    "/upload/to-subtask/{subtaskId}": {
       "post": {
         "description": "",
+        "parameters": [
+          {
+            "name": "subtaskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

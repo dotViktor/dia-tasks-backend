@@ -7,7 +7,7 @@ import swaggerFile from "./swagger-output.json" assert { type: "json" };
 import fileUpload from "express-fileupload";
 import * as swagger from "swagger-ui-express";
 import { uploadsRouter } from "./app/routes/uploads.routes.js";
-
+//TODO: Implement absolute deletion of a task and its children, TASK>SUBTASKS>IMAGES/NOTES
 dotenv.config();
 export const app = express();
 
