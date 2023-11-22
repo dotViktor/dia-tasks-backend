@@ -3,8 +3,6 @@ import { tasksController } from "../controllers/tasks.controllers.js";
 import { subTasksController } from "../controllers/subtasks.controllers.js";
 const router = express.Router();
 
-// TODO: look at all update endpoints and rework them
-
 router.get("/", async (req, res) => {
   res.status(200).send(await tasksController.getTasks());
 });

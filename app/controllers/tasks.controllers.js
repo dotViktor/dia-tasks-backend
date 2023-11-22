@@ -1,7 +1,6 @@
 import { dataBase } from "../config/databasePool.js";
 
 // we fetch the data for each task seperately as it does not come bundled with users
-// TODO: Optimize by bundling the data and reducing the ammount of calls to the database
 export async function getTasks() {
   try {
     const [tasksQuery] = await dataBase.query(`SELECT * FROM Tasks;`);
@@ -92,21 +91,6 @@ export async function updateUsersInTask(taskId, users) {
     );
     for (const user of users) {
       await assignUserToTask(user.id, taskId);
-    }
-    return rows;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function updateSubtasksInTask(taskId, subtasks) {
-  try {
-    const [rows] = await dataBase.query(
-      `DELETE FROM SubTasks WHERE TaskID = ?;`,
-      [taskId]
-    );
-    for (const subtask of subtasks) {
-      await createSubTask(subtask.title, subtask.description, taskId);
     }
     return rows;
   } catch (error) {
