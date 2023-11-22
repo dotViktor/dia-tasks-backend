@@ -27,4 +27,16 @@ export async function uploadImage(image, subtaskId) {
   }
 }
 
+export async function getImagesBySubtaskId(subtaskId) {
+  try {
+    const [result] = await dataBase.query(
+      `SELECT * FROM Images WHERE SubTaskParentID = ?`,
+      [subtaskId]
+    );
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export * as uploadsController from "./uploads.controllers.js";

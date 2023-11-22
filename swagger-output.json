@@ -459,6 +459,24 @@
         }
       }
     },
+    "/tasks/subtask/{subTaskId}/images": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "subTaskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/tasks/{taskId}/update-subtasks": {
       "put": {
         "description": "",

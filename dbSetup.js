@@ -207,7 +207,7 @@ async function fillDummyImages() {
     await dataBase.query(`
     INSERT INTO Images (SubTaskParentID, imagePath)
     VALUES
-    (1, './uploads/cat.jpg')
+    (1, './images/cat.jpg')
     `);
     console.log("Filled IMAGES data");
   } catch (error) {

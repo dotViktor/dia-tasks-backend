@@ -1,6 +1,7 @@
 import express from "express";
 import { tasksController } from "../controllers/tasks.controllers.js";
 import { subTasksController } from "../controllers/subtasks.controllers.js";
+import { uploadsController } from "../controllers/uploads.controllers.js";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -146,6 +147,22 @@ router.delete("/subtasks/:subTaskId", async (req, res) => {
   res
     .status(200)
     .send(await subTasksController.deleteSubTask(req.params.subTaskId));
+});
+
+router.get("/subtask/:subTaskId/images", async (req, res) => {
+  //send the full url using req.protocol and hostname and port as well as the image path gotten
+  const images = await uploadsController.getImagesBySubtaskId(
+    req.params.subTaskId
+  );
+  const fullImages = images.map((image) => {
+    return {
+      ...image,
+      imagePath: `${req.protocol}://${
+        req.hostname
+      }:7777${image.imagePath.substring(1)}`,
+    };
+  });
+  res.status(200).send(fullImages);
 });
 
 router.put("/:taskId/update-subtasks", async (req, res) => {
