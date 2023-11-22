@@ -175,7 +175,7 @@
                 "endTime": {
                   "example": "any"
                 },
-                "assignedUsers": {
+                "users": {
                   "example": "any"
                 },
                 "subtasks": {
@@ -237,6 +237,9 @@
                   "example": "any"
                 },
                 "endTime": {
+                  "example": "any"
+                },
+                "users": {
                   "example": "any"
                 }
               }
@@ -305,6 +308,48 @@
           },
           {
             "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/tasks/{taskId}/complete-task": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/tasks/{taskId}/complete-subtask/{subTaskId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "subTaskId",
             "in": "path",
             "required": true,
             "type": "string"
@@ -396,16 +441,10 @@
         }
       }
     },
-    "/tasks/{taskId}/subtasks/{subTaskId}": {
+    "/tasks/subtasks/{subTaskId}": {
       "delete": {
         "description": "",
         "parameters": [
-          {
-            "name": "taskId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "subTaskId",
             "in": "path",
@@ -416,6 +455,55 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/tasks/{taskId}/update-subtasks": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "deletedSubtasks": {
+                  "example": "any"
+                },
+                "newSubtasks": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/upload/": {
+      "post": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }

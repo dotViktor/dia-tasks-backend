@@ -99,6 +99,21 @@ export async function updateUsersInTask(taskId, users) {
   }
 }
 
+export async function updateSubtasksInTask(taskId, subtasks) {
+  try {
+    const [rows] = await dataBase.query(
+      `DELETE FROM SubTasks WHERE TaskID = ?;`,
+      [taskId]
+    );
+    for (const subtask of subtasks) {
+      await createSubTask(subtask.title, subtask.description, taskId);
+    }
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function deleteTaskById(id) {
   try {
     const [rows] = await dataBase.query(`DELETE FROM Tasks WHERE id = ?;`, [

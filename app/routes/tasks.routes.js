@@ -3,6 +3,8 @@ import { tasksController } from "../controllers/tasks.controllers.js";
 import { subTasksController } from "../controllers/subtasks.controllers.js";
 const router = express.Router();
 
+// TODO: look at all update endpoints and rework them
+
 router.get("/", async (req, res) => {
   res.status(200).send(await tasksController.getTasks());
 });
@@ -142,10 +144,21 @@ router.post("/:taskId/subtasks", async (req, res) => {
   res.status(201).send(response);
 });
 
-router.delete("/:taskId/subtasks/:subTaskId", async (req, res) => {
+router.delete("/subtasks/:subTaskId", async (req, res) => {
   res
     .status(200)
     .send(await subTasksController.deleteSubTask(req.params.subTaskId));
 });
 
+router.put("/:taskId/update-subtasks", async (req, res) => {
+  if (!req.body.deletedSubtasks || !req.body.newSubtasks) {
+    return res.status(400).send("Missing required fields");
+  }
+  await subTasksController.updateSubtaskArray(
+    req.body.deletedSubtasks,
+    req.body.newSubtasks
+  );
+
+  res.status(200).send("Subtasks updated");
+});
 export { router as tasksRouter };
