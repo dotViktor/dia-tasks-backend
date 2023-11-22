@@ -176,6 +176,45 @@ async function fillDummySubTasks() {
     console.log(error);
   }
 }
+
+async function createImagesTable() {
+  try {
+    const [result] = await dataBase.query("SHOW TABLES LIKE 'Images'");
+    if (result.length > 0) {
+      console.log("Images table already exists");
+      return;
+    }
+    await dataBase.query(`
+    CREATE TABLE Images (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      SubTaskParentID int,
+      imagePath VARCHAR(255),
+      FOREIGN KEY (SubTaskParentID) REFERENCES SubTasks(id)
+    )`);
+    console.log("Created Images table");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function fillDummyImages() {
+  try {
+    const [rows] = await dataBase.query(`SELECT * FROM Images;`);
+    if (rows.length > 0) {
+      console.log("Replacing all IMAGES data");
+      await dataBase.query(`TRUNCATE Images;`);
+    }
+    await dataBase.query(`
+    INSERT INTO Images (SubTaskParentID, imagePath)
+    VALUES
+    (1, './uploads/cat.jpg')
+    `);
+    console.log("Filled IMAGES data");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function setupDatabase() {
   try {
     await createUsersTable();
@@ -192,6 +231,10 @@ async function setupDatabase() {
 
     await createSubTaskTable();
     await fillDummySubTasks();
+    console.log("----");
+
+    await createImagesTable();
+    await fillDummyImages();
   } catch (error) {
     console.error("Error setting up database:", error);
   }
