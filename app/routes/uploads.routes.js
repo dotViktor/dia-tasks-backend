@@ -3,6 +3,7 @@ import express from "express";
 const router = express.Router();
 
 router.post("/to-subtask/:subtaskId", (req, res) => {
+  if (!req.files) return res.status(400).send("No files uploaded");
   const { image } = req.files;
 
   if (!image) return res.sendStatus(400);
