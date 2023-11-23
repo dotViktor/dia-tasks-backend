@@ -150,7 +150,6 @@ router.delete("/subtasks/:subTaskId", async (req, res) => {
 });
 
 router.get("/subtask/:subTaskId/images", async (req, res) => {
-  //send the full url using req.protocol and hostname and port as well as the image path gotten
   const images = await uploadsController.getImagesBySubtaskId(
     req.params.subTaskId
   );
@@ -163,6 +162,14 @@ router.get("/subtask/:subTaskId/images", async (req, res) => {
     };
   });
   res.status(200).send(fullImages);
+});
+
+router.delete("/subtask/image/:id", async (req, res) => {
+  const response = await uploadsController.deleteImage(req.params.id);
+  if (!response) {
+    return res.status(404).send("Image not found");
+  }
+  res.status(200).send("Image deleted");
 });
 
 router.put("/:taskId/update-subtasks", async (req, res) => {

@@ -1,4 +1,5 @@
 import { dataBase } from "../config/databasePool.js";
+import * as fs from "fs";
 
 export async function uploadImage(image, subtaskId) {
   try {
@@ -22,6 +23,31 @@ export async function uploadImage(image, subtaskId) {
     );
     image.mv(imagePath);
     return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteImage(imageId) {
+  try {
+    const [result] = await dataBase.query(`SELECT * FROM Images WHERE id = ?`, [
+      imageId,
+    ]);
+    if (result.length === 0) {
+      return null;
+    }
+    const imagePath = result[0].imagePath;
+    await dataBase.query(`DELETE FROM Images WHERE id = ?`, [imageId]);
+
+    fs.unlink(imagePath, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("Image deleted");
+    });
+
+    return imagePath;
   } catch (error) {
     console.error(error);
   }
