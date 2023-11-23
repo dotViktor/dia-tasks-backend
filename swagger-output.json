@@ -441,63 +441,6 @@
         }
       }
     },
-    "/tasks/subtasks/{subTaskId}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "subTaskId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/tasks/subtask/{subTaskId}/images": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "subTaskId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/tasks/subtask/image/{id}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
     "/tasks/{taskId}/update-subtasks": {
       "put": {
         "description": "",
@@ -551,6 +494,63 @@
           },
           "400": {
             "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/subtasks/{subTaskId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "subTaskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/subtasks/{subTaskId}/images": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "subTaskId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/subtasks/image/{id}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }

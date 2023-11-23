@@ -143,35 +143,6 @@ router.post("/:taskId/subtasks", async (req, res) => {
   res.status(201).send(response);
 });
 
-router.delete("/subtasks/:subTaskId", async (req, res) => {
-  res
-    .status(200)
-    .send(await subTasksController.deleteSubTask(req.params.subTaskId));
-});
-
-router.get("/subtask/:subTaskId/images", async (req, res) => {
-  const images = await uploadsController.getImagesBySubtaskId(
-    req.params.subTaskId
-  );
-  const fullImages = images.map((image) => {
-    return {
-      ...image,
-      imagePath: `${req.protocol}://${
-        req.hostname
-      }:7777${image.imagePath.substring(1)}`,
-    };
-  });
-  res.status(200).send(fullImages);
-});
-
-router.delete("/subtask/image/:id", async (req, res) => {
-  const response = await uploadsController.deleteImage(req.params.id);
-  if (!response) {
-    return res.status(404).send("Image not found");
-  }
-  res.status(200).send("Image deleted");
-});
-
 router.put("/:taskId/update-subtasks", async (req, res) => {
   if (!req.body.deletedSubtasks || !req.body.newSubtasks) {
     return res.status(400).send("Missing required fields");

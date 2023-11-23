@@ -28,11 +28,9 @@ async function createUsersTable() {
 
 async function fillDummyUsers() {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM Users;`);
-    if (rows.length > 0) {
-      console.log("Replacing all USERS data");
-      await dataBase.query(`TRUNCATE Users;`);
-    }
+    console.log("Replacing all USERS data");
+    await dataBase.query(`TRUNCATE Users;`);
+
     await dataBase.query(`
     INSERT INTO Users (name, email, role, password)
     VALUES
@@ -94,11 +92,9 @@ async function createUserTasksRelation() {
 
 async function fillDummyTasks() {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM Tasks;`);
-    if (rows.length > 0) {
-      console.log("Replacing all TASKS data");
-      await dataBase.query(`TRUNCATE Tasks;`);
-    }
+    console.log("Replacing all TASKS data");
+    await dataBase.query(`TRUNCATE Tasks;`);
+
     await dataBase.query(`
     INSERT INTO Tasks (title, description, startTime, endTime, isComplete)
     VALUES
@@ -114,11 +110,9 @@ async function fillDummyTasks() {
 
 async function fillUserTasksRelation() {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM UserTasks;`);
-    if (rows.length > 0) {
-      console.log("Replacing all USERTASKS data");
-      await dataBase.query(`TRUNCATE UserTasks;`);
-    }
+    console.log("Replacing all USERTASKS data");
+    await dataBase.query(`TRUNCATE UserTasks;`);
+
     await dataBase.query(`
     INSERT INTO UserTasks (UserID, TaskID)
     VALUES
@@ -159,11 +153,8 @@ async function createSubTaskTable() {
 
 async function fillDummySubTasks() {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM SubTasks;`);
-    if (rows.length > 0) {
-      console.log("Replacing all SUBTASKS data");
-      await dataBase.query(`TRUNCATE SubTasks;`);
-    }
+    await dataBase.query(`TRUNCATE SubTasks;`);
+
     await dataBase.query(`
     INSERT INTO SubTasks (TaskParentID, title, description, requiredNotes, requiredImages, isComplete)
     VALUES
@@ -199,17 +190,52 @@ async function createImagesTable() {
 
 async function fillDummyImages() {
   try {
-    const [rows] = await dataBase.query(`SELECT * FROM Images;`);
-    if (rows.length > 0) {
-      console.log("Replacing all IMAGES data");
-      await dataBase.query(`TRUNCATE Images;`);
-    }
+    await dataBase.query(`TRUNCATE Images;`);
+
     await dataBase.query(`
     INSERT INTO Images (SubTaskParentID, imagePath)
     VALUES
     (1, './images/cat.jpg')
     `);
     console.log("Filled IMAGES data");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function createNotesTable() {
+  try {
+    const [result] = await dataBase.query("SHOW TABLES LIKE 'Notes'");
+    if (result.length > 0) {
+      console.log("Notes table already exists");
+      return;
+    }
+    await dataBase.query(`
+    CREATE TABLE Notes (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      SubTaskParentID int,
+      title VARCHAR(255),
+      content TEXT,
+      FOREIGN KEY (SubTaskParentID) REFERENCES SubTasks(id)
+    )`);
+    console.log("Created Notes table");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fillDummyNotes() {
+  try {
+    console.log("Replacing all NOTES data");
+    await dataBase.query(`TRUNCATE Notes;`);
+
+    await dataBase.query(`
+    INSERT INTO Notes (SubTaskParentID, title, content)
+    VALUES
+    (1, 'Note 1', 'Content 1')
+
+    `);
+    console.log("Filled NOTES data");
   } catch (error) {
     console.log(error);
   }
@@ -235,6 +261,10 @@ async function setupDatabase() {
 
     await createImagesTable();
     await fillDummyImages();
+    console.log("----");
+
+    await createNotesTable();
+    await fillDummyNotes();
   } catch (error) {
     console.error("Error setting up database:", error);
   }
