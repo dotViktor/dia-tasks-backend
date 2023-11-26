@@ -6,20 +6,24 @@
   "main": "index.js",
   "scripts": {
     "dbSetup": "node dbSetup.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "swagger-autogen": "node swagger.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "swagger-autogen": "^2.23.7"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "express": "5.0.0-beta.1",
+    "express-fileupload": "^1.4.3",
     "jsonwebtoken": "^9.0.2",
-    "mysql2": "^3.6.3"
+    "mysql2": "^3.6.3",
+    "swagger-ui-express": "^5.0.0"
   }
 }
