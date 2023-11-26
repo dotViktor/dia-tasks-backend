@@ -98,9 +98,9 @@ async function fillDummyTasks() {
     await dataBase.query(`
     INSERT INTO Tasks (title, description, startTime, endTime, isComplete)
     VALUES
-    ('Task 1', 'Description 1', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 1),
-    ('Task 2', 'Description 2', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 0),
-    ('Task 3', 'Description 3', '2021-01-01 00:00:00', '2021-01-01 00:00:00', 0)
+    ('Task 1', 'Description 1', '2023-11-26 08:00:00', '2023-11-24 14:00:00', 1),
+    ('Task 2', 'Description 2', '2023-11-27 08:00:00', '2023-11-25 15:00:00', 0),
+    ('Task 3', 'Description 3', '2023-11-28 08:00:00', '2023-11-26 16:00:00', 0)
     `);
     console.log("Filled TASKS data");
   } catch (error) {
@@ -232,7 +232,9 @@ export async function fillDummyNotes() {
     await dataBase.query(`
     INSERT INTO Notes (SubTaskParentID, title, content)
     VALUES
-    (1, 'Note 1', 'Content 1')
+    (1, 'Note 1', 'Content 1'),
+    (1, 'Note 2', 'Content 2'),
+    (3, 'Note 3', 'Content 3')
 
     `);
     console.log("Filled NOTES data");
