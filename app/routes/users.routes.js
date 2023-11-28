@@ -67,4 +67,16 @@ router.get("/:userID/assigned-tasks", async (req, res) => {
     .send(await usersController.getAssignedTasksByUserId(req.params.userID));
 });
 
+router.get("/:userID/make-admin", async (req, res) => {
+  res
+    .status(200)
+    .send(await usersController.changeClientToAdmin(req.params.userID));
+});
+
+router.get("/:userID/make-client", async (req, res) => {
+  res
+    .status(200)
+    .send(await usersController.changeAdminToClient(req.params.userID));
+});
+
 export { router as usersRouter };

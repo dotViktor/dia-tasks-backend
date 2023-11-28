@@ -10,6 +10,5 @@ export const dataBase = mysql
     user: "root",
     password: "",
     database: "dia_tasks",
-    timezone: "Europe/Sofia",
   })
   .promise();

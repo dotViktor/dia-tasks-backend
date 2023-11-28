@@ -74,4 +74,27 @@ export async function getAssignedTasksByUserId(userId) {
   }
 }
 
+export async function changeClientToAdmin(id) {
+  try {
+    const [rows] = await dataBase.query(
+      `UPDATE Users SET role = 'admin' WHERE id = ?;`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function changeAdminToClient(id) {
+  try {
+    const [rows] = await dataBase.query(
+      `UPDATE Users SET role = 'client' WHERE id = ?;`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
 export * as usersController from "./users.controllers.js";
