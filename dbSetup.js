@@ -98,9 +98,9 @@ async function fillDummyTasks() {
     await dataBase.query(`
     INSERT INTO Tasks (title, description, startTime, endTime, isComplete)
     VALUES
-    ('Task 1', 'Description 1', '2023-11-26 08:00:00', '2023-11-24 14:00:00', 1),
-    ('Task 2', 'Description 2', '2023-11-27 08:00:00', '2023-11-25 15:00:00', 0),
-    ('Task 3', 'Description 3', '2023-11-28 08:00:00', '2023-11-26 16:00:00', 0)
+    ('Task 1', 'Description 1', '2023-11-26 08:00:00', '2023-11-27 14:00:00', 1),
+    ('Task 2', 'Description 2', '2023-11-27 08:00:00', '2023-11-28 15:00:00', 0),
+    ('Task 3', 'Description 3', '2023-11-28 08:00:00', '2023-11-29 16:00:00', 0)
     `);
     console.log("Filled TASKS data");
   } catch (error) {
