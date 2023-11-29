@@ -53,10 +53,15 @@ export async function getUserByEmail(email) {
 
 export async function deleteUserById(id) {
   try {
-    const [rows] = await dataBase.query(`DELETE FROM Users WHERE id = ?;`, [
-      id,
-    ]);
-    return rows;
+    const [userDeletionResponse] = await dataBase.query(
+      `DELETE FROM Users WHERE id = ?;`,
+      [id]
+    );
+    const [userTasksDeletionResponse] = await dataBase.query(
+      `DELETE FROM UserTasks WHERE UserID = ?;`,
+      [id]
+    );
+    return { userDeletionResponse, userTasksDeletionResponse };
   } catch (error) {
     console.log(error);
   }
@@ -97,4 +102,5 @@ export async function changeAdminToClient(id) {
     console.log(error);
   }
 }
+
 export * as usersController from "./users.controllers.js";

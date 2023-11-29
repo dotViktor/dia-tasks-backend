@@ -79,4 +79,7 @@ router.get("/:userID/make-client", async (req, res) => {
     .send(await usersController.changeAdminToClient(req.params.userID));
 });
 
+router.delete("/:userID", async (req, res) => {
+  res.status(200).send(await usersController.deleteUserById(req.params.userID));
+});
 export { router as usersRouter };

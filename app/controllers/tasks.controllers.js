@@ -22,7 +22,6 @@ export async function getTaskById(id) {
       `SELECT * FROM Tasks WHERE id = ?;`,
       [id]
     );
-    //add an array of users to the task object
     const result = await Promise.all(
       taskQuery.map(async (task) => {
         const users = await getAssignedUsersByTaskId(task.id);

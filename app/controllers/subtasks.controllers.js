@@ -69,4 +69,25 @@ export async function updateSubtaskArray(idsToDelete, subtasksToCreate) {
   }
 }
 
+export async function deleteAllSubtasksByTaskParent(parentTaskId) {
+  //return all deleted subtasks' ids
+  try {
+    const [ids] = await dataBase.query(
+      `
+      SELECT id FROM SubTasks WHERE TaskParentID = ?;
+      `,
+      [parentTaskId, parentTaskId]
+    );
+    const idsToDelete = ids.map((id) => id.id);
+
+    for (const id of idsToDelete) {
+      await deleteSubTask(id);
+    }
+
+    return { deletedSubTasks: idsToDelete };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export * as subTasksController from "./subtasks.controllers.js";

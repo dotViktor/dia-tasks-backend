@@ -65,4 +65,19 @@ export async function getImagesBySubtaskId(subtaskId) {
   }
 }
 
+export async function deleteAllImagesBySubtaskParentId(subtaskId) {
+  try {
+    const [imagesToDelete] = await dataBase.query(
+      `SELECT id FROM Images WHERE SubTaskParentID = ?`,
+      [subtaskId]
+    );
+    const imagesIds = imagesToDelete.map((image) => image.id);
+    for (const imageId of imagesIds) {
+      await deleteImage(imageId);
+    }
+    return { deletedImages: imagesIds };
+  } catch (error) {
+    console.log(error);
+  }
+}
 export * as uploadsController from "./uploads.controllers.js";
