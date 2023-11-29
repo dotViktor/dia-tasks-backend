@@ -30,7 +30,7 @@ export async function addUser(name, email, password) {
   try {
     const [rows] = await dataBase.query(
       `
-    INSERT INTO Users (name, email, role, password) VALUES (?, ?, 'user', ?);
+    INSERT INTO Users (name, email, role, password) VALUES (?, ?, 'client', ?);
     `,
       [name, email, password]
     );

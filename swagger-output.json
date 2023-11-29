@@ -681,24 +681,6 @@
           }
         }
       }
-    },
-    "/subtasks/deleteall/{taskParentId}": {
-      "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "taskParentId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   }
 }
