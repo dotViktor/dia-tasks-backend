@@ -80,12 +80,18 @@ export async function getAssignedTasksByUserId(userId) {
 }
 
 export async function changeClientToAdmin(id) {
+  //should change client to admin, and remove him from all UserTasks
   try {
-    const [rows] = await dataBase.query(
+    const [roleSetResponse] = await dataBase.query(
       `UPDATE Users SET role = 'admin' WHERE id = ?;`,
       [id]
     );
-    return rows;
+
+    const [userTasksDeletionResponse] = await dataBase.query(
+      `DELETE FROM UserTasks WHERE UserID = ?;`,
+      [id]
+    );
+    return { roleSetResponse, userTasksDeletionResponse };
   } catch (error) {
     console.log(error);
   }
