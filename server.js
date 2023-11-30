@@ -22,15 +22,14 @@ app.use(
   })
 );
 
-app.use(
-  "/users",
-  //  authController.authenticateToken,
-  usersRouter
-);
-app.use("/tasks", tasksRouter);
-app.use("/images", express.static("images"));
-app.use("/upload", uploadsRouter);
-app.use("/subtasks", subtasksRouter);
+app.use("/users", authController.authenticateToken, usersRouter);
+app.use("/tasks", authController.authenticateToken, tasksRouter);
+app.use("/images", authController.authenticateToken, express.static("images"));
+app.use("/upload", authController.authenticateToken, uploadsRouter);
+app.use("/subtasks", authController.authenticateToken, subtasksRouter);
+app.use("/verify-token", authController.authenticateToken, (req, res) => {
+  res.status(200).send(req.user);
+});
 
 app.listen(7777, () => {
   console.log("Server started on port 7777");

@@ -4,7 +4,7 @@ import { dataBase } from "../config/databasePool.js";
 
 export function generateAccessToken(user) {
   const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "3h",
+    expiresIn: "8h",
   });
   return token;
 }
@@ -43,8 +43,9 @@ export async function authenticateToken(req, res, next) {
     return res.sendStatus(401);
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-    if (err.name === "TokenExpiredError") return res.status(401).send(err);
-    if (err) return res.status(403).send(err);
+    if (err?.name === "TokenExpiredError")
+      return res.status(401).send("Token has expired", err);
+    if (err) return res.status(403).send("Faulty Token", err);
     req.user = user;
     next();
   });
