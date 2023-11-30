@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
   if (await usersController.getUserByEmail(req.body.email)) {
     if (await authController.validateUser(req.body.email, req.body.password)) {
       const [user] = await usersController.getUserByEmail(req.body.email);
-      const token = authController.generateToken({
+      const token = authController.generateAccessToken({
         user,
       });
       res.status(202).send({

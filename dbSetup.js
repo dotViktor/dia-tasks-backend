@@ -159,8 +159,8 @@ async function fillDummySubTasks() {
     await dataBase.query(`
     INSERT INTO SubTasks (TaskParentID, title, description, requiredNotes, requiredImages, isComplete)
     VALUES
-    (1, 'SubTask 1', 'Description 1', 0, 0, 1),
-    (1, 'SubTask 2', 'Description 2', 0, 0, 0),
+    (1, 'SubTask 1', 'Description 1', 0, 0, 0),
+    (1, 'SubTask 2', 'Description 2', 0, 0, 1),
     (3, 'SubTask 3', 'Description 3', 0, 0, 0)
     `);
     console.log("Filled SUBTASKS data");

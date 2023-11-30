@@ -8,7 +8,8 @@ import fileUpload from "express-fileupload";
 import * as swagger from "swagger-ui-express";
 import { uploadsRouter } from "./app/routes/uploads.routes.js";
 import { subtasksRouter } from "./app/routes/subtasks.routes.js";
-//TODO: Implement absolute deletion of a task and its children, TASK>SUBTASKS>IMAGES/NOTES
+import { authController } from "./app/controllers/auth.controllers.js";
+
 dotenv.config();
 export const app = express();
 
@@ -21,7 +22,11 @@ app.use(
   })
 );
 
-app.use("/users", usersRouter);
+app.use(
+  "/users",
+  //  authController.authenticateToken,
+  usersRouter
+);
 app.use("/tasks", tasksRouter);
 app.use("/images", express.static("images"));
 app.use("/upload", uploadsRouter);
