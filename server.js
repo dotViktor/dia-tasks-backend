@@ -24,7 +24,7 @@ app.use(
 
 app.use("/users", authController.authenticateToken, usersRouter);
 app.use("/tasks", authController.authenticateToken, tasksRouter);
-app.use("/images", authController.authenticateToken, express.static("images"));
+app.use("/images", express.static("images"));
 app.use("/upload", authController.authenticateToken, uploadsRouter);
 app.use("/subtasks", authController.authenticateToken, subtasksRouter);
 app.use("/verify-token", authController.authenticateToken, (req, res) => {
