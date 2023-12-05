@@ -1,4 +1,5 @@
 import { dataBase } from "../config/databasePool.js";
+import { subTaskCompleter } from "../shared/subtaskcompleter.controllers.js";
 
 export async function createNoteForSubTask(note, subtaskId) {
   try {
@@ -6,6 +7,7 @@ export async function createNoteForSubTask(note, subtaskId) {
       `INSERT INTO Notes (SubTaskParentID, title, content) VALUES (?, ?, ?)`,
       [subtaskId, note.title, note.content]
     );
+    subTaskCompleter(subtaskId);
     return result;
   } catch (error) {
     console.error(error);
