@@ -1,5 +1,6 @@
 import { uploadsController } from "../controllers/uploads.controllers.js";
 import express from "express";
+import { subTaskCompleter } from "../shared/subtaskcompleter.controllers.js";
 const router = express.Router();
 
 router.post("/to-subtask/:subtaskId", (req, res) => {
@@ -18,6 +19,7 @@ router.post("/to-subtask/:subtaskId", (req, res) => {
     for (const file of image) {
       uploadsController.uploadImage(file, req.params.subtaskId);
     }
+    subTaskCompleter(req.params.subtaskId);
     return res.status(200).send("Files uploaded");
   }
 
@@ -26,6 +28,7 @@ router.post("/to-subtask/:subtaskId", (req, res) => {
   }
 
   uploadsController.uploadImage(image, req.params.subtaskId);
+  subTaskCompleter(req.params.subtaskId);
   res.status(200).send("File uploaded");
 });
 

@@ -8,7 +8,8 @@ import fileUpload from "express-fileupload";
 import * as swagger from "swagger-ui-express";
 import { uploadsRouter } from "./app/routes/uploads.routes.js";
 import { subtasksRouter } from "./app/routes/subtasks.routes.js";
-//TODO: Implement absolute deletion of a task and its children, TASK>SUBTASKS>IMAGES/NOTES
+import { authController } from "./app/controllers/auth.controllers.js";
+
 dotenv.config();
 export const app = express();
 
@@ -21,11 +22,14 @@ app.use(
   })
 );
 
-app.use("/users", usersRouter);
-app.use("/tasks", tasksRouter);
+app.use("/users", authController.authenticateToken, usersRouter);
+app.use("/tasks", authController.authenticateToken, tasksRouter);
 app.use("/images", express.static("images"));
-app.use("/upload", uploadsRouter);
-app.use("/subtasks", subtasksRouter);
+app.use("/upload", authController.authenticateToken, uploadsRouter);
+app.use("/subtasks", authController.authenticateToken, subtasksRouter);
+app.use("/verify-token", authController.authenticateToken, (req, res) => {
+  res.status(200).send(req.user);
+});
 
 app.listen(7777, () => {
   console.log("Server started on port 7777");

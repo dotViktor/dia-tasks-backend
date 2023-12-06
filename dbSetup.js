@@ -36,7 +36,8 @@ async function fillDummyUsers() {
     VALUES
     ('Gosho', 'g@g.com', 'admin', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K'),
     ('Pesho', 'p@p.com', 'client', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K'),
-    ('Tosho', 't@t.com', 'admin', '123456')
+    ('Tosho', 't@t.com', 'admin', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K'),
+    ('Ivan', 'i@i.com', 'client', '$2b$10$OogmTLy4zCkEYZ4dDguDzOvD8iilVOqx8JGLscCIu.9lNF0MiZw8K')
     `);
     console.log("Filled USERS data");
   } catch (error) {
@@ -116,10 +117,10 @@ async function fillUserTasksRelation() {
     await dataBase.query(`
     INSERT INTO UserTasks (UserID, TaskID)
     VALUES
-    (1, 1),
     (2, 1),
-    (3, 3),
-    (1, 2)
+    (2, 3),
+    (4, 2),
+    (4, 3)
     `);
     console.log("Filled USERTASKS data");
   } catch (error) {
@@ -158,8 +159,8 @@ async function fillDummySubTasks() {
     await dataBase.query(`
     INSERT INTO SubTasks (TaskParentID, title, description, requiredNotes, requiredImages, isComplete)
     VALUES
-    (1, 'SubTask 1', 'Description 1', 0, 0, 1),
-    (1, 'SubTask 2', 'Description 2', 0, 0, 0),
+    (1, 'SubTask 1', 'Description 1', 0, 0, 0),
+    (1, 'SubTask 2', 'Description 2', 0, 0, 1),
     (3, 'SubTask 3', 'Description 3', 0, 0, 0)
     `);
     console.log("Filled SUBTASKS data");
@@ -195,7 +196,10 @@ async function fillDummyImages() {
     await dataBase.query(`
     INSERT INTO Images (SubTaskParentID, imagePath)
     VALUES
-    (1, './images/cat.jpg')
+    (1, './images/cat.jpg'),
+    (1, './images/alcoholism.png'),
+    (1, './images/walter.jpg'),
+    (1, './images/classy.jpg')
     `);
     console.log("Filled IMAGES data");
   } catch (error) {

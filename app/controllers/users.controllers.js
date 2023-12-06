@@ -30,7 +30,7 @@ export async function addUser(name, email, password) {
   try {
     const [rows] = await dataBase.query(
       `
-    INSERT INTO Users (name, email, role, password) VALUES (?, ?, 'user', ?);
+    INSERT INTO Users (name, email, role, password) VALUES (?, ?, 'client', ?);
     `,
       [name, email, password]
     );
@@ -53,10 +53,15 @@ export async function getUserByEmail(email) {
 
 export async function deleteUserById(id) {
   try {
-    const [rows] = await dataBase.query(`DELETE FROM Users WHERE id = ?;`, [
-      id,
-    ]);
-    return rows;
+    const [userDeletionResponse] = await dataBase.query(
+      `DELETE FROM Users WHERE id = ?;`,
+      [id]
+    );
+    const [userTasksDeletionResponse] = await dataBase.query(
+      `DELETE FROM UserTasks WHERE UserID = ?;`,
+      [id]
+    );
+    return { userDeletionResponse, userTasksDeletionResponse };
   } catch (error) {
     console.log(error);
   }
@@ -67,6 +72,36 @@ export async function getAssignedTasksByUserId(userId) {
     const [rows] = await dataBase.query(
       `SELECT * FROM Tasks WHERE id IN (SELECT TaskID FROM UserTasks WHERE UserID = ?);`,
       [userId]
+    );
+    return rows;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function changeClientToAdmin(id) {
+  //should change client to admin, and remove him from all UserTasks
+  try {
+    const [roleSetResponse] = await dataBase.query(
+      `UPDATE Users SET role = 'admin' WHERE id = ?;`,
+      [id]
+    );
+
+    const [userTasksDeletionResponse] = await dataBase.query(
+      `DELETE FROM UserTasks WHERE UserID = ?;`,
+      [id]
+    );
+    return { roleSetResponse, userTasksDeletionResponse };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function changeAdminToClient(id) {
+  try {
+    const [rows] = await dataBase.query(
+      `UPDATE Users SET role = 'client' WHERE id = ?;`,
+      [id]
     );
     return rows;
   } catch (error) {

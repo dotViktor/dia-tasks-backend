@@ -1,6 +1,7 @@
 import express from "express";
 import { tasksController } from "../controllers/tasks.controllers.js";
 import { subTasksController } from "../controllers/subtasks.controllers.js";
+import { notesController } from "../controllers/notes.controllers.js";
 import { uploadsController } from "../controllers/uploads.controllers.js";
 const router = express.Router();
 
@@ -74,7 +75,31 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  res.status(200).send(await tasksController.deleteTaskById(req.params.id));
+  //cascading delete tasks > subtasks > notes/images
+  //deletion of tasks and subtasks
+  const delTaskResponse = await tasksController.deleteTaskById(req.params.id);
+  const delSubTasksResponse =
+    await subTasksController.deleteAllSubtasksByTaskParent(req.params.id);
+  let deletedNotes = [];
+  let deletedImages = [];
+
+  //deletion of notes and images
+  for (const subtaskId of delSubTasksResponse.deletedSubTasks) {
+    const notesResponse = await notesController.deleteAllNotesBySubtaskParentId(
+      subtaskId
+    );
+    const imagesResponse =
+      await uploadsController.deleteAllImagesBySubtaskParentId(subtaskId);
+
+    deletedNotes = [...deletedNotes, ...notesResponse.deletedNotes];
+    deletedImages = [...deletedImages, ...imagesResponse.deletedImages];
+  }
+  res.status(200).send({
+    deletedTask: delTaskResponse,
+    deletedSubTasks: delSubTasksResponse,
+    deletedNotes,
+    deletedImages,
+  });
 });
 
 router.post("/:taskId/add-user/:userId", async (req, res) => {

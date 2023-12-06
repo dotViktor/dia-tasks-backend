@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
   if (await usersController.getUserByEmail(req.body.email)) {
     if (await authController.validateUser(req.body.email, req.body.password)) {
       const [user] = await usersController.getUserByEmail(req.body.email);
-      const token = authController.generateToken({
+      const token = authController.generateAccessToken({
         user,
       });
       res.status(202).send({
@@ -67,4 +67,19 @@ router.get("/:userID/assigned-tasks", async (req, res) => {
     .send(await usersController.getAssignedTasksByUserId(req.params.userID));
 });
 
+router.get("/:userID/make-admin", async (req, res) => {
+  res
+    .status(200)
+    .send(await usersController.changeClientToAdmin(req.params.userID));
+});
+
+router.get("/:userID/make-client", async (req, res) => {
+  res
+    .status(200)
+    .send(await usersController.changeAdminToClient(req.params.userID));
+});
+
+router.delete("/:userID", async (req, res) => {
+  res.status(200).send(await usersController.deleteUserById(req.params.userID));
+});
 export { router as usersRouter };
